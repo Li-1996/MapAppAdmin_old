@@ -2,17 +2,15 @@
   <div class="app-container">
 
     <el-row class="divcss" :data="list" v-for="value in list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
-      <el-card :body-style="{ padding: '0px'}" class="card">
-        <img class="image" :src="value['head_image']" width="80" height="80">
-        <el-tag type="primary" class="tag">user_id &nbsp&nbsp：{{value['user_id']}}</el-tag>
-        <el-tag type="primary" class="tag">性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp别：{{value['sex']}}</el-tag>
-        <el-tag type="primary" class="tag">关注人数：{{value['zqcy_auth']}}</el-tag>
-        <el-tag type="primary" class="tag">昵&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp称：{{value['nick_name']}}</el-tag>
-        <el-tag type="primary" class="tag">实名认证：{{value['real_name_auth']}}</el-tag>
-        <el-tag type="primary" class="tag">红牛认证：{{value['red_bull_auth']}}</el-tag>
-        <el-tag type="primary" class="tag">金牛认证：{{value['gold_bull_auth']}}</el-tag>
-        <el-button id="button" class="button" type="info" @click="balance(value['focus_count'])">余额
-        </el-button>
+      <el-card class="card">
+        <div class="image"><img  :src="value['head_image']" style="width:160px;height: 190px; "></div>
+        <el-tag type="primary"><div class="tag">user_id &nbsp&nbsp：{{value['user_id']}}</div></el-tag>
+        <el-tag type="primary"><div class="tag">性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp别：{{value['gender']}}</div></el-tag>
+        <el-tag type="primary"><div class="tag">区&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp域：{{value['region']}}</div></el-tag>
+        <el-tag type="primary"><div class="tag">昵&nbsp&nbsp&nbsp&nbsp&nbsp称：{{value['nick_name']}}</div></el-tag>
+        <el-tag type="primary"><div class="tag">星&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp座：{{value['constellation']}}</div></el-tag>
+        <span class="tag">个人签名：{{value['person_signature']}}</span>
+        <el-button  id="button" class="button" type="info" @click="getBalance(value.user_id)">余额</el-button>
       </el-card>
     </el-row>
 
@@ -32,13 +30,14 @@
 </template>
 
 <script>
-  import {getUserList} from '@/api/table';
+  import {getUserList,getUserBank} from '@/api/table';
 
   export default {
 
     data() {
       return {
         list: null,
+        remainder: null,
         listLoading: true,
         totals: 0
       }
@@ -46,7 +45,7 @@
     created() {
       this.fetchData({
         page: 1
-      });
+      })
     },
     methods: {
       handleCurrentChange(val) {
@@ -54,22 +53,27 @@
           page: val
         })
       },
+      getBalance(user_id) {
+        getUserBank ({
+          user_id : user_id
+        }) . then(response => {
+          alert(response.detail.balance)
+      })
 
-      balance: function (message) {
-        alert("余额:  " + message);
       },
 
       fetchData(params) {
+        console.log(params);
         this.listLoading = true;
         getUserList(params).then(response => {
           this.list = response.detail.list;
           this.totals = response.detail.totals;
           this.listLoading = false;
-
-        })
+      })
       }
     }
   };
+
 </script>
 
 <style>
@@ -79,34 +83,29 @@
     height: 30px;
     margin-right: 5px;
   }
-
   .tag {
-    font-size: 18px;
+    font-size: 17px;
     border-radius: 10px;
-    margin-bottom: 5px;
-    margin-left: 40px;
+    margin-left: 10px;
     display: inline-block;
-    width: 200px;
+    width: 150px;
   }
-
-  .button {
-    margin-left: 150px;
-    width: 40%;
-    height: 100%;
-  }
-
-  .image {
-    width: 20%;
-    height: 100px;
-    display: block;
-    margin-left: 40px;
-    margin-top: 10px;
-  }
-
   .card {
     margin-bottom: 50px;
     margin-top: 10px;
+    height: 300px;
+    padding: 0px;
+    position: relative;
   }
-
-
+  .image {
+    float:left;
+    padding:10px;
+    border: 1px solid #ddd;
+    margin-right: 20px;
+  }
+  .button{
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+  }
 </style>

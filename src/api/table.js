@@ -8,12 +8,22 @@ export function getList(params) {
   });
 }
 
-export function getUserList(params) {
+ export function getUserList(params) {
   return fetch({
     url: '/user',
     method: 'get',
     params
-  })
+  });
 }
+
+  export function getUserBank(params) {
+    return fetch({
+      url: '/get_user_bank',
+      method: 'get',
+      params
+    });
+  }
+
+
 
 
