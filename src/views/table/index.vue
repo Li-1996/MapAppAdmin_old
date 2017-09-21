@@ -89,6 +89,7 @@
     margin-left: 10px;
     display: inline-block;
     width: 150px;
+    color: #000;
   }
   .card {
     margin-bottom: 50px;
@@ -96,6 +97,7 @@
     height: 300px;
     padding: 0px;
     position: relative;
+    background:-webkit-gradient(linear, 0 0, 0 bottom, from(#DDA0DD), to(#afddff));
   }
   .image {
     float:left;
