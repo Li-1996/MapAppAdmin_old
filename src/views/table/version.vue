@@ -1,32 +1,41 @@
 <template>
   <div class="app-container">
-    <el-button type="text" @click="createVersion = true">创建版本</el-button>
-
-    <el-dialog title="创建版本" >
+    <el-button type="text" @click="createVersion=true" size="large">创建版本</el-button>
+    <el-dialog title="创建版本" :visible.sync="createVersion">
       <el-form :model="form">
-        <el-form-item label="活动名称">
+        <el-form-item label="app版本：">
+          <el-input v-model="form.app_version" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="活动区域" >
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+        <el-form-item label="下载地址：">
+          <el-input v-model="form.url" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="描述：">
+          <el-input v-model="form.describe" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="设备类型：" >
+          <el-select v-model="form.device_type" placeholder="请选择设备类型">
+            <el-option label="ios" value="ios"></el-option>
+            <el-option label="android" value="android"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="是否强制更新">
+          <el-radio class="radio" v-model="radio" label="强制">强制</el-radio>
+          <el-radio class="radio" v-model="radio" label="非强制">非强制</el-radio>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="createVersion=false">取 消</el-button>
+        <el-button type="primary" @click="addVersion">确 定</el-button>
       </div>
     </el-dialog>
-    <table border="2" class="divcss" :data="version_list" v-for="value in version_list">
-      <tr><th>发布：</th><td>{{value['is_publish']}}</td></tr>
-      <tr><th>网址：</th>{{value['url']}}</td></tr>
+
+    <table border="2" class="tablecss" :data="version_list" v-for="value in version_list">
+      <tr><th>下载地址：</th>{{value['url']}}</td></tr>
       <tr><th>描述：</th><td>{{value['describe']}}</td></tr>
       <tr><th>更新类型：</th><td>{{value['update_type']}}</td></tr>
       <tr><th>设备类型：</th><td>{{value['device_type']}}</td></tr>
-      <tr><th>id：</th><td>{{value['id']}}</td></tr>
       <tr><th>app版本：</th><td>{{value['app_version']}}</td></tr>
-    </table><br>
+    </table>
   </div>
 </template>
 
@@ -36,17 +45,16 @@
 
     data() {
       return {
+        radio: '强制',
         version_list: null,
         totals: 0,
+        createVersion: false,
         form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          app_version: '',
+          url: '',
+          describe: '',
+          device_type: '',
+          update_type: ''
         }
       }
     },
@@ -67,11 +75,17 @@
         this.totals = response.detail.totals;
         })
       },
-      createVersion(){
-        dialogFormVisible: false
+      addVersion(){
+
       }
     }
   };
 
 </script>
+
+<style>
+  .tablecss {
+    margin-bottom: 20px;
+  }
+</style>
 
