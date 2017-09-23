@@ -19,6 +19,7 @@ const Err404 = _import('404');
 const Form = _import('page/form');
 const Table = _import('table/index');
 const Test = _import('table/test');
+const Version= _import('table/version');
 
 Vue.use(Router);
 
@@ -78,6 +79,14 @@ export const asyncRouterMap = [
     noDropdown: true,
     children: [{ path: 'index', component: Test, name: '测试', meta: { role: ['super'] } }]
   },
-
+  {
+    path: '/version',
+    component: Layout,
+    redirect: '/table/index',
+    name: 'Version',
+    icon:'tubiaoleixingzhengchang',
+    noDropdown: true,
+    children: [{ path: 'index', component: Version, name: '版本信息', meta: { role: ['super'] } }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ];

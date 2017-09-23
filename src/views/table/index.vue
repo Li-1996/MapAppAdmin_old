@@ -8,7 +8,7 @@
         <el-tag type="primary"><div class="tag">性&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp别：{{value['gender']}}</div></el-tag>
         <el-tag type="primary"><div class="tag">区&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp域：{{value['region']}}</div></el-tag>
         <el-tag type="primary"><div class="tag">昵&nbsp&nbsp&nbsp&nbsp&nbsp称：{{value['nick_name']}}</div></el-tag>
-        <el-tag type="primary"><div class="tag">星&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp座：{{value['constellation']}}</div></el-tag>
+        <el-tag type="primary"><div class="tag">星&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp座：{{value['constellation']['name']}}</div></el-tag>
         <span class="tag">个人签名：{{value['person_signature']}}</span>
         <el-button  id="button" class="button" type="info" @click="getBalance(value.user_id)">余额</el-button>
       </el-card>
@@ -31,13 +31,11 @@
 
 <script>
   import {getUserList,getUserBank} from '@/api/table';
-
   export default {
 
     data() {
       return {
         list: null,
-        remainder: null,
         listLoading: true,
         totals: 0
       }
@@ -53,23 +51,20 @@
           page: val
         })
       },
-      getBalance(user_id) {
-        getUserBank ({
-          user_id : user_id
-        }) . then(response => {
+      getBalance(user_id){
+        getUserBank({
+          user_id:user_id
+        }).then(response => {
           alert(response.detail.balance)
-      })
-
+        })
       },
-
       fetchData(params) {
-        console.log(params);
         this.listLoading = true;
         getUserList(params).then(response => {
           this.list = response.detail.list;
           this.totals = response.detail.totals;
           this.listLoading = false;
-      })
+        })
       }
     }
   };
@@ -89,6 +84,7 @@
     margin-left: 10px;
     display: inline-block;
     width: 150px;
+    color: #000;
   }
   .card {
     margin-bottom: 50px;
@@ -96,6 +92,7 @@
     height: 300px;
     padding: 0px;
     position: relative;
+    background:-webkit-gradient(linear, 0 0, 0 bottom, from(#DDA0DD), to(#afddff));
   }
   .image {
     float:left;

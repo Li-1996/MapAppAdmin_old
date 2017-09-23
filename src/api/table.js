@@ -24,6 +24,14 @@ export function getList(params) {
     });
   }
 
+  export function getVersion(params) {
+    return fetch({
+    url: '/version_list',
+    method: 'get',
+    params
+    });
+  }
+
 
 
 
