@@ -12,15 +12,15 @@
         <el-form-item label="描述：">
           <el-input v-model="form.describe" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="设备类型：" >
-          <el-select v-model="form.device_type" placeholder="请选择设备类型">
-            <el-option label="ios" value="ios"></el-option>
-            <el-option label="android" value="android"></el-option>
-          </el-select>
+        <el-form-item label="设备类型" >
+          <el-radio class="radio"v-model="form.device_type" label="ios">ios</el-radio>
+          <el-radio class="radio" v-model="form.device_type" label="android">android</el-radio>
         </el-form-item>
-        <el-form-item label="是否强制更新">
-          <el-radio class="radio" v-model="radio" label="强制">强制</el-radio>
-          <el-radio class="radio" v-model="radio" label="非强制">非强制</el-radio>
+        <el-form-item label="是否强制更新" >
+          <el-select v-model="form.update_type" placeholder="请选择更新方式">
+            <el-option label="0(非强制)" value="0"></el-option>
+            <el-option label="1(强制)" value="1"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -30,11 +30,20 @@
     </el-dialog>
 
     <table border="2" class="tablecss" :data="version_list" v-for="value in version_list">
-      <tr><th>下载地址：</th>{{value['url']}}</td></tr>
-      <tr><th>描述：</th><td>{{value['describe']}}</td></tr>
-      <tr><th>更新类型：</th><td>{{value['update_type']}}</td></tr>
-      <tr><th>设备类型：</th><td>{{value['device_type']}}</td></tr>
-      <tr><th>app版本：</th><td>{{value['app_version']}}</td></tr>
+      <tr>
+        <th>下载地址</th>
+        <th>描述</th>
+        <th>更新类型</th>
+        <th>设备类型</th>
+        <th>app版本</th>
+      </tr>
+      <tr>
+        <td>{{value['url']}}</td>
+        <td>{{value['describe']}}
+        <td>{{value['update_type']}}</td>
+        <td>{{value['device_type']}}</td>
+        <td>{{value['app_version']}}</td>
+      </tr>
     </table>
   </div>
 </template>
@@ -45,7 +54,6 @@
 
     data() {
       return {
-        radio: '强制',
         version_list: null,
         totals: 0,
         createVersion: false,
@@ -76,7 +84,14 @@
         })
       },
       addVersion(){
-
+        this.version_list.push(this.form);
+        this.form = {
+          app_version: '',
+          url: '',
+          describe: '',
+          device_type: '',
+          update_type: ''
+        }
       }
     }
   };
