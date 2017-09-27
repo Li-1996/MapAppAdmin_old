@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+
     <el-button type="text" @click="createVersion=true" size="large">创建版本</el-button>
     <el-dialog title="创建版本" :visible.sync="createVersion">
       <el-form :model="form">
@@ -29,15 +30,15 @@
       </div>
     </el-dialog>
 
-    <table border="2" class="tablecss" :data="version_list" v-for="value in version_list">
+    <table border="2" class="tablecss">
       <tr>
         <th>下载地址</th>
-        <th>描述</th>
+        <th>描 述</th>
         <th>更新类型</th>
         <th>设备类型</th>
         <th>app版本</th>
       </tr>
-      <tr>
+      <tr :data="version_list" v-for="value in version_list">
         <td>{{value['url']}}</td>
         <td>{{value['describe']}}
         <td>{{value['update_type']}}</td>
@@ -80,7 +81,7 @@
       fetchData(params) {
         getVersion(params).then(response => {
           this.version_list = response.detail.list;
-        this.totals = response.detail.totals;
+          this.totals = response.detail.totals;
         })
       },
       addVersion(){
@@ -100,7 +101,12 @@
 
 <style>
   .tablecss {
-    margin-bottom: 20px;
+    text-align: center;
+    width: 60%;
+    height: 20px;
+  }
+  td {
+    width:
   }
 </style>
 
