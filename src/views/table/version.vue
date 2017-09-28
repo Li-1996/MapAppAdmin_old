@@ -2,8 +2,9 @@
   <div class="app-container">
 
     <el-button type="text" @click="createVersion=true" size="large">创建版本</el-button>
+
     <el-dialog title="创建版本" :visible.sync="createVersion">
-      <el-form :model="form">
+      <el-form :model="form" name="form">
         <el-form-item label="app版本：">
           <el-input v-model="form.app_version" auto-complete="off"></el-input>
         </el-form-item>
@@ -14,7 +15,7 @@
           <el-input v-model="form.describe" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="设备类型" >
-          <el-radio class="radio"v-model="form.device_type" label="ios">ios</el-radio>
+          <el-radio class="radio" v-model="form.device_type" label="ios">ios</el-radio>
           <el-radio class="radio" v-model="form.device_type" label="android">android</el-radio>
         </el-form-item>
         <el-form-item label="是否强制更新" >
@@ -26,33 +27,46 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="createVersion=false">取 消</el-button>
-        <el-button type="primary" @click="addVersion">确 定</el-button>
+        <el-button type="primary" @click="addVersion(form)">确 定</el-button>
       </div>
     </el-dialog>
 
-    <table border="2" class="tablecss">
-      <tr>
-        <th>下载地址</th>
-        <th>描 述</th>
-        <th>更新类型</th>
-        <th>设备类型</th>
-        <th>app版本</th>
+    <el-table  stytle="width: 100%" border :data="version_list">
+      <el-table-column
+        label="下载地址"
+        prop="url">
+      </el-table-column>
+      <el-table-column
+        label="描述"
+        prop="describe">
+      </el-table-column>
+      <el-table-column
+        label="更新类型"
+        prop="update_type">
+      </el-table-column>
+      <el-table-column
+        label="设备类型"
+        prop="device_type">
+      </el-table-column>
+      <el-table-column
+        label="app版本"
+        prop="app_version">
+      </el-table-column>
       </tr>
-      <tr :data="version_list" v-for="value in version_list">
-        <td>{{value['url']}}</td>
-        <td>{{value['describe']}}
-        <td>{{value['update_type']}}</td>
-        <td>{{value['device_type']}}</td>
-        <td>{{value['app_version']}}</td>
-      </tr>
-    </table>
+    </el-table>
+
+    <el-pagination
+      layout="total, prev, pager, next, jumper"
+      @current-change="handleCurrentChange"
+      :page-size=10
+      :total=totals>
+    </el-pagination>
   </div>
 </template>
 
 <script>
-  import {getVersion} from '@/api/table';
+  import {getVersion,getCreateversion} from '@/api/table';
   export default {
-
     data() {
       return {
         version_list: null,
@@ -78,35 +92,33 @@
           page: val
         })
       },
+      addVersion(form){
+        console.log("------");
+        console.log(this.form);
+        console.log("------");
+          getCreateversion(form).then(request => {
+            this.version_list = request;
+          /*
+          this.version_list.app_version = request.app_version;
+          this.version_list.url = request.url;
+          this.version_list.describe = request.describe;
+          this.version_list.device_type = request.device_type;
+          this.version_list.update_version = request.update_version;
+          */
+         })
+          console.log(this.version_list);
+          //alert(this.form.app_version + this.form.url + this.form.describe + this.form.device_type + this.form.update_type)
+        },
       fetchData(params) {
         getVersion(params).then(response => {
           this.version_list = response.detail.list;
           this.totals = response.detail.totals;
         })
-      },
-      addVersion(){
-        this.version_list.push(this.form);
-        this.form = {
-          app_version: '',
-          url: '',
-          describe: '',
-          device_type: '',
-          update_type: ''
-        }
       }
     }
-  };
-
+  }
 </script>
 
 <style>
-  .tablecss {
-    text-align: center;
-    width: 60%;
-    height: 20px;
-  }
-  td {
-    width:
-  }
 </style>
 

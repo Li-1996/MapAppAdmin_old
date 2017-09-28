@@ -32,6 +32,14 @@ export function getList(params) {
     });
   }
 
+  export function getCreateversion(params) {
+    return fetch({
+    url: '/create_version',
+    method: 'post',
+    params
+    });
+  }
+
 
 
 
