@@ -27,7 +27,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="createVersion=false">取 消</el-button>
-        <el-button type="primary" @click="addVersion(form)">确 定</el-button>
+        <el-button type="primary" @click="addVersion">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -92,12 +92,18 @@
           page: val
         })
       },
-      addVersion(form){
+      addVersion(){
         console.log("------");
         console.log(this.form);
         console.log("------");
-          getCreateversion(form).then(request => {
-            this.version_list = request;
+          getCreateversion({
+            'app_version':this.form.app_version,
+            'url':this.form.url,
+            'describe':this.form.describe,
+            'device_type':this.form.device_type,
+            'update_type':this.form.update_type
+          }).then(response => {
+            this.version_list = response;
           /*
           this.version_list.app_version = request.app_version;
           this.version_list.url = request.url;
