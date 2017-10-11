@@ -93,27 +93,15 @@
         })
       },
       addVersion(){
-        console.log("------");
-        console.log(this.form);
-        console.log("------");
           getCreateversion({
-            'app_version':this.form.app_version,
-            'url':this.form.url,
-            'describe':this.form.describe,
-            'device_type':this.form.device_type,
-            'update_type':this.form.update_type
+            'app_version': this.form.app_version,
+            'url': this.form.url,
+            'describe': this.form.describe,
+            'device_type': this.form.device_type,
+            'update_type': this.form.update_type
           }).then(response => {
-            this.version_list = response;
-          /*
-          this.version_list.app_version = request.app_version;
-          this.version_list.url = request.url;
-          this.version_list.describe = request.describe;
-          this.version_list.device_type = request.device_type;
-          this.version_list.update_version = request.update_version;
-          */
+            this.version_list = response.detail;
          })
-          console.log(this.version_list);
-          //alert(this.form.app_version + this.form.url + this.form.describe + this.form.device_type + this.form.update_type)
         },
       fetchData(params) {
         getVersion(params).then(response => {

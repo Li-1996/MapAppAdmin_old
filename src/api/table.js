@@ -33,11 +33,15 @@ export function getList(params) {
   }
 
   export function getCreateversion(params) {
+    console.log('22222')
+    console.log(params)
+    console.log('22222')
     return fetch({
-    url: '/create_version',
-    method: 'post',
-    params
+      url: '/create_version',
+      method: 'post',
+      data: params
     });
+
   }
 
 
