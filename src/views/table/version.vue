@@ -31,30 +31,43 @@
       </div>
     </el-dialog>
 
+    <table border="1">
+      <tr>
+        <th>下载地址</th>
+        <th>描述</th>
+        <th>更新类型</th>
+        <th>设备类型</th>
+        <th>app版本</th>
+      </tr>
+      <tr :data="version_list" v-for="value in version_list">
+        <td>{{value.url}}</td>
+        <td>{{value.describe}}</td>
+        <td>{{value.update_type}}</td>
+        <td>{{value.device_type}}</td>
+        <td>{{value.app_version}}</td>
+      </tr>
+    </table>
+
+<!--
     <el-table  stytle="width: 100%" border :data="version_list">
-      <el-table-column
-        label="下载地址"
-        prop="url">
+      <el-table-column label="下载地址">
+        <template scope="scope">{{scope.row.url}}</template>
       </el-table-column>
-      <el-table-column
-        label="描述"
-        prop="describe">
+      <el-table-column label="描述">
+        <template scope="scope">{{scope.row.describe}}</template>
       </el-table-column>
-      <el-table-column
-        label="更新类型"
-        prop="update_type">
+      <el-table-column label="更新类型">
+        <template scope="scope">{{scope.row.update_type}}</template>
       </el-table-column>
-      <el-table-column
-        label="设备类型"
-        prop="device_type">
+      <el-table-column label="设备类型">
+        <template scope="scope">{{scope.row.device_type}}</template>
       </el-table-column>
-      <el-table-column
-        label="app版本"
-        prop="app_version">
+      <el-table-column label="app版本">
+        <template scope="scope">{{scope.row.app_version}}</template>
       </el-table-column>
       </tr>
     </el-table>
-
+-->
     <el-pagination
       layout="total, prev, pager, next, jumper"
       @current-change="handleCurrentChange"
@@ -102,6 +115,7 @@
           }).then(response => {
             this.version_list = response.detail;
          })
+        location.reload();
         },
       fetchData(params) {
         getVersion(params).then(response => {
