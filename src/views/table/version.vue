@@ -14,11 +14,11 @@
         <el-form-item label="描述：">
           <el-input v-model="form.describe" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="设备类型" >
+        <el-form-item label="设备类型">
           <el-radio class="radio" v-model="form.device_type" label="ios">ios</el-radio>
           <el-radio class="radio" v-model="form.device_type" label="android">android</el-radio>
         </el-form-item>
-        <el-form-item label="是否强制更新" >
+        <el-form-item label="是否强制更新">
           <el-select v-model="form.update_type" placeholder="请选择更新方式">
             <el-option label="0(非强制)" value="0"></el-option>
             <el-option label="1(强制)" value="1"></el-option>
@@ -31,46 +31,28 @@
       </div>
     </el-dialog>
 
-    <!--
-        <table border="1">
-          <tr>
-            <th>下载地址</th>
-            <th>描述</th>
-            <th>更新类型</th>
-            <th>设备类型</th>
-            <th>app版本</th>
-          </tr>
-          <tr :data="version_list" v-for="value in version_list">
-            <td>{{value.url}}</td>
-            <td>{{value.describe}}</td>
-            <td>{{value.update_type}}</td>
-            <td>{{value.device_type}}</td>
-            <td>{{value.app_version}}</td>
-          </tr>
-        </table>
-    -->
-        <el-table  stytle="width: 100%" border :data="version_list">
-          <el-table-column label="下载地址">
-            <template scope="scope">{{scope.row.url}}</template>
-          </el-table-column>
-          <el-table-column label="描述">
-            <template scope="scope">{{scope.row.describe}}</template>
-          </el-table-column>
-          <el-table-column label="更新类型">
-            <template scope="scope">{{scope.row.update_type}}</template>
-          </el-table-column>
-          <el-table-column label="设备类型">
-            <template scope="scope">{{scope.row.device_type}}</template>
-          </el-table-column>
-          <el-table-column label="app版本">
-            <template scope="scope">{{scope.row.app_version}}</template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template scope="scope">
-              <el-button size="small" type="danger" @click="deleteVersion">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+    <el-table stytle="width: 100%" id="table" border :data="version_list">
+      <el-table-column label="app版本">
+        <template scope="scope">{{scope.row.app_version}}</template>
+      </el-table-column>
+      <el-table-column label="下载地址">
+        <template scope="scope">{{scope.row.url}}</template>
+      </el-table-column>
+      <el-table-column label="描述">
+        <template scope="scope">{{scope.row.describe}}</template>
+      </el-table-column>
+      <el-table-column label="设备类型">
+        <template scope="scope">{{scope.row.device_type}}</template>
+      </el-table-column>
+      <el-table-column label="更新类型">
+        <template scope="scope">{{scope.row.update_type}}</template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template scope="scope">
+          <el-button size="small" type="danger" @click="deleteVersion(scope.row.index)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
     <el-pagination
       layout="total, prev, pager, next, jumper"
@@ -110,30 +92,29 @@
         })
       },
       addVersion(){
-            getCreateversion({
-              'app_version': this.form.app_version,
-              'url': this.form.url,
-              'describe': this.form.describe,
-              'device_type': this.form.device_type,
-              'update_type': this.form.update_type
-            }).then(response => {
-                this.version_list.push(response.detail)
-                this.fetchData();
-              })
-        },
-      deleteVersion(){
-        /*
-        var resource = this.$resource(getVersion);
-        resource.delete({app_version: app_version}).then((response) => {
-          this.getUsers();
-        })
-        */
+        getCreateversion({
+          app_version: this.form.app_version,
+          url: this.form.url,
+          describe: this.form.describe,
+          device_type: this.form.device_type,
+          update_type: this.form.update_type
+        }).then(response => {
+          this.version_list.push(response.detail);
+        this.fetchData();
+      })
+      },
+      deleteVersion(index){
+        this.$confirm("是否删除").then(response => {
+          this.version_list.splice(index, 1);
+        console.log("******");
+        console.log(this.version_list);
+      })
       },
       fetchData(params) {
         getVersion(params).then(response => {
           this.version_list = response.detail.list;
-          this.totals = response.detail.totals;
-        })
+        this.totals = response.detail.totals;
+      })
       }
     }
   }

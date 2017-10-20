@@ -28,14 +28,11 @@ export function getList(params) {
     return fetch({
     url: '/version_list',
     method: 'get',
-    params
+     params
     });
   }
 
   export function getCreateversion(params) {
-    console.log('22222')
-    console.log(params)
-    console.log('22222')
     return fetch({
       url: '/create_version',
       method: 'post',

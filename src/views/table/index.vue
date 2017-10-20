@@ -13,13 +13,6 @@
         <el-button  id="button" class="button" type="info" @click="getBalance(value.user_id)">余额</el-button>
       </el-card>
     </el-row>
-
-    <!--<el-table-column align="center" prop="created_at" label="Display_time" width="200">-->
-    <!--<template scope="scope">-->
-    <!--<i class="el-icon-time"></i>-->
-    <!--<span>{{scope.row.display_time}}</span>-->
-    <!--</template>-->
-    <!--</el-table-column>-->
     <el-pagination
       layout="total, prev, pager, next, jumper"
       @current-change="handleCurrentChange"
@@ -32,7 +25,6 @@
 <script>
   import {getUserList,getUserBank} from '@/api/table';
   export default {
-
     data() {
       return {
         list: null,
@@ -68,9 +60,7 @@
       }
     }
   };
-
 </script>
-
 <style>
   .divcss {
     display: inline-block;
