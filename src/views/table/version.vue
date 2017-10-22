@@ -4,7 +4,7 @@
     <el-button type="text" @click="createVersion=true" size="large">创建版本</el-button>
 
     <el-dialog title="创建版本" :visible.sync="createVersion">
-      <el-form :model="form" name="form">
+      <el-form :model="form">
         <el-form-item label="app版本：">
           <el-input v-model="form.app_version" auto-complete="off"></el-input>
         </el-form-item>
@@ -100,16 +100,16 @@
           update_type: this.form.update_type
         }).then(response => {
           this.version_list.push(response.detail);
-        this.fetchData();
+          this.fetchData();
       })
       },
+      /*
       deleteVersion(index){
-        this.$confirm("是否删除").then(response => {
+        .then(response => {
           this.version_list.splice(index, 1);
-        console.log("******");
-        console.log(this.version_list);
       })
       },
+      */
       fetchData(params) {
         getVersion(params).then(response => {
           this.version_list = response.detail.list;
